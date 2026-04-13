@@ -346,7 +346,7 @@ export default function App() {
               className="relative"
             >
               <div className="absolute inset-0 rounded-4xl bg-linear-to-br from-cyan-300/15 via-amber-200/10 to-transparent blur-2xl" />
-              <div className="ml-auto w-full max-w-[40rem] xl:max-w-[42rem]">
+              <div className="ml-auto w-full max-w-160 xl:max-w-2xl">
                 <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-white/5 shadow-[0_20px_80px_rgba(2,8,23,0.55)] backdrop-blur-2xl">
                   <div className="p-6 sm:p-7 xl:p-8">
                     <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -354,7 +354,7 @@ export default function App() {
                         <div className="text-base font-semibold text-white">Portfolio Snapshot</div>
                         <div className="mt-2 text-sm leading-6 text-slate-400">{profile.tagline}</div>
                       </div>
-                      <div className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs leading-5 text-emerald-300 md:max-w-[15rem]">
+                      <div className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs leading-5 text-emerald-300 md:max-w-60">
                         {profile.availability}
                       </div>
                     </div>
@@ -413,7 +413,7 @@ export default function App() {
                 >
                   {stats.map((stat) => (
                     <Motion.div key={stat.label} variants={sectionFade}>
-                      <div className="h-full min-h-[8.5rem] rounded-3xl border border-white/10 bg-[#09131c]/70 p-5 shadow-2xl shadow-cyan-950/10 backdrop-blur-xl">
+                      <div className="h-full min-h-34 rounded-3xl border border-white/10 bg-[#09131c]/70 p-5 shadow-2xl shadow-cyan-950/10 backdrop-blur-xl">
                         <div className="text-xs uppercase tracking-[0.18em] text-slate-400">{stat.label}</div>
                         <div className="mt-3 text-base font-semibold text-white">{stat.value}</div>
                       </div>

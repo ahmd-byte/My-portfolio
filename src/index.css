@@ -1,13 +1,72 @@
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Work+Sans:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, "Segoe UI", sans-serif;
-  color: #e5e7eb;
-  background: #07111a;
+  --bg-primary: #fdf8f3;
+  --bg-secondary: #fffaf5;
+  --glass-bg: rgba(255, 255, 255, 0.35);
+  --glass-bg-button: rgba(255, 255, 255, 0.5);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-border-button: rgba(255, 255, 255, 0.4);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-button: #0f172a;
+  --accent-primary: #f97316;
+  --accent-secondary: #ec4899;
+  --accent-gradient: linear-gradient(135deg, #f97316 0%, #ec4899 50%, #a855f7 100%);
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 30px rgba(249, 115, 22, 0.3);
+  
+  font-family: "Work Sans", "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --glass-bg: rgba(30, 41, 59, 0.5);
+  --glass-bg-button: rgba(51, 65, 85, 0.6);
+  --glass-border: rgba(148, 163, 184, 0.3);
+  --glass-border-button: rgba(148, 163, 184, 0.5);
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-button: #f1f5f9;
+  --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 30px rgba(249, 115, 22, 0.6);
+}
+
+/* Button readability fixes */
+.secondary-button,
+.link-tile {
+  background: var(--glass-bg-button) !important;
+  border-color: var(--glass-border-button) !important;
+  color: var(--text-button) !important;
+}
+
+.secondary-button:hover,
+.link-tile:hover {
+  background: var(--glass-bg-button) !important;
+  border-color: var(--accent-primary) !important;
+  color: var(--text-button) !important;
+}
+
+.display-face {
+  font-family: "Outfit", "Work Sans", sans-serif;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.gradient-text {
+  background: var(--accent-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 html,
@@ -16,9 +75,23 @@ body,
   min-height: 100%;
 }
 
+html {
+  scroll-padding-top: 7rem;
+  scroll-snap-type: y mandatory;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   overflow-x: clip;
-  background: #07111a;
+  background: var(--bg-primary);
+}
+
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.display-face {
+  font-family: "Outfit", "Work Sans", sans-serif;
 }

@@ -18,7 +18,7 @@
 <div align="center">
   <a href="https://lucide.dev"><img src="https://img.shields.io/badge/Lucide_React-Icons-16202a?style=flat-square&logo=lucide&logoColor=white" alt="Lucide React" /></a>
   <img src="https://img.shields.io/badge/Responsive-Laptop%20%2B%20Mobile-16202a?style=flat-square&logo=googlechrome&logoColor=white" alt="Responsive design" />
-  <img src="https://img.shields.io/badge/Theme-Dark%20Glassmorphism-16202a?style=flat-square&logo=github&logoColor=white" alt="Theme" />
+  <img src="https://img.shields.io/badge/Theme-Light%20&%20Dark%20Modes-16202a?style=flat-square&logo=github&logoColor=white" alt="Theme" />
 </div>
 
 ---
@@ -43,7 +43,8 @@ The goal is to make technical work feel clear, professional, and easy to trust a
 
 - Animated hero, cards, and section reveals using `framer-motion`
 - Responsive single-page layout for laptop and mobile screens
-- Glassmorphism-inspired dark UI with layered gradients and glow effects
+- Glassmorphism-inspired UI with layered gradients and glow effects
+- Full Light & Dark Mode toggle running natively on CSS variables
 - Smooth section scrolling with sticky navigation
 - Portfolio sections for About, Skills, Projects, and Contact
 - Clean component structure centered in `src/App.jsx`

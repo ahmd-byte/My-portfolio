@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import { motion as Motion } from "framer-motion";
+import { motion as Motion, useReducedMotion } from "framer-motion";
 import {
   ArrowRight,
+  ArrowUpRight,
   BarChart3,
   Brain,
+  BriefcaseBusiness,
   ChevronDown,
   Database,
-  ExternalLink,
   GitBranch,
   Layers3,
-  LineChart,
   Link2,
   Mail,
+  MapPin,
   Menu,
+  Moon,
   Server,
   Sparkles,
+  Sun,
   X,
 } from "lucide-react";
 
@@ -43,30 +46,30 @@ const nav = [
 
 const stats = [
   { label: "Focus", value: "Analytics + Data Engineering" },
-  { label: "Tooling", value: "React, Python, SQL" },
+  { label: "Tooling", value: "Python, SQL, React" },
   { label: "Approach", value: "Clear, useful, end-to-end" },
 ];
 
-const skills = [
+const strengths = [
   {
     icon: BarChart3,
     title: "Data Analysis",
-    desc: "Exploring trends, KPIs, and patterns that support practical business decisions.",
+    desc: "Explore trends, pressure-test assumptions, and surface metrics that inform real decisions.",
   },
   {
     icon: Database,
     title: "SQL & Modeling",
-    desc: "Writing clear queries, shaping structured datasets, and organizing data for reporting.",
+    desc: "Shape clean datasets, write dependable queries, and make reporting easier to maintain.",
   },
   {
     icon: Server,
     title: "ETL Pipelines",
-    desc: "Building Python workflows to extract, clean, transform, and load data reliably.",
+    desc: "Build Python workflows that move from raw inputs to usable outputs without handholding.",
   },
   {
     icon: Brain,
     title: "Insight Communication",
-    desc: "Turning technical work into concise stories recruiters, clients, and teams can follow.",
+    desc: "Present technical work with enough clarity that stakeholders can trust the outcome quickly.",
   },
 ];
 
@@ -74,7 +77,7 @@ const projects = [
   {
     title: "Sales Performance Analysis",
     tag: "Business Analytics",
-    desc: "Analyzed region, category, and monthly sales data to uncover revenue drivers and identify growth opportunities.",
+    desc: "Analyzed regional, category, and monthly sales performance to pinpoint revenue drivers and where growth was stalling.",
     stack: ["Python", "Pandas", "SQL", "Matplotlib"],
     caseStudy: "#",
     github: "#",
@@ -82,7 +85,7 @@ const projects = [
   {
     title: "Customer Churn Analysis",
     tag: "Retention Analytics",
-    desc: "Explored churn behavior, customer risk segments, and retention opportunities using feature-based analysis.",
+    desc: "Segmented customer behavior, identified churn risk patterns, and highlighted opportunities for stronger retention strategy.",
     stack: ["Python", "Pandas", "Scikit-learn", "Visualization"],
     caseStudy: "#",
     github: "#",
@@ -90,11 +93,17 @@ const projects = [
   {
     title: "PostgreSQL ETL Workflow",
     tag: "Data Engineering",
-    desc: "Built an ETL pipeline to transform raw operational data into clean, analysis-ready tables for reporting.",
+    desc: "Transformed raw operational data into analysis-ready tables using a repeatable ETL process built for reporting use.",
     stack: ["Python", "PostgreSQL", "SQLAlchemy", "ETL"],
     caseStudy: "#",
     github: "#",
   },
+];
+
+const processSteps = [
+  "Understand the business question before touching the data.",
+  "Clean, model, and validate the pipeline so results hold up.",
+  "Present the output with enough polish that the work is easy to trust.",
 ];
 
 const sectionFade = {
@@ -102,7 +111,7 @@ const sectionFade = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: "easeOut" },
+    transition: { duration: 0.65, ease: "easeOut" },
   },
 };
 
@@ -110,40 +119,43 @@ const staggerWrap = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
+      staggerChildren: 0.1,
     },
   },
 };
 
-function GlowOrb({ className = "" }) {
-  return (
-    <div
-      className={`absolute rounded-full bg-linear-to-r from-cyan-400 via-amber-300 to-orange-300 opacity-30 blur-3xl ${className}`}
-    />
-  );
+function Container({ className = "", children }) {
+  return <div className={`mx-auto w-full max-w-6xl lg:max-w-7xl xl:max-w-screen-2xl px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 ${className}`}>{children}</div>;
 }
 
-function SectionHeading({ eyebrow, title, description }) {
+function SectionHeading({ eyebrow, title, description, centered = false }) {
   return (
-    <div className="max-w-2xl">
-      <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.2em] text-cyan-100">
+    <div className={`w-full ${centered ? "max-w-4xl mx-auto text-center flex flex-col items-center" : "max-w-2xl"}`}>
+      <div className={`inline-flex items-center gap-2 rounded-full border border-[#d9c7a8] bg-[#fffaf2] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#8b6a37] shadow-sm`}>
         <Sparkles className="h-3.5 w-3.5" />
         {eyebrow}
       </div>
-      <h2 className="text-3xl font-semibold tracking-tight text-white sm:text-4xl">{title}</h2>
-      <p className="mt-4 text-sm leading-7 text-slate-300 sm:text-base">{description}</p>
+      <h2 className="display-face mt-5 text-3xl leading-tight font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.9rem]">
+        {title}
+      </h2>
+      <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">{description}</p>
     </div>
   );
 }
 
 function PrimaryButton({ href, children, external = false, className = "", onClick }) {
+  const handleClick = (e) => {
+    if (href === "#") e.preventDefault();
+    if (onClick) onClick(e);
+  };
+
   return (
     <a
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       target={external ? "_blank" : undefined}
       rel={external ? "noreferrer" : undefined}
-      className={`inline-flex items-center justify-center rounded-2xl bg-[#f2efe8] px-6 py-3 text-sm font-medium text-slate-950 transition hover:bg-white ${className}`}
+      className={`inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl bg-[image:var(--accent-gradient)] p-4 text-sm font-bold text-white shadow-(--shadow-glow) backdrop-blur-xl transition-all duration-300 hover:scale-[1.05] hover:shadow-[0_25px_50px_rgba(249,115,22,0.4)] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-(--accent-primary)/30 ${className}`}
     >
       {children}
     </a>
@@ -151,22 +163,85 @@ function PrimaryButton({ href, children, external = false, className = "", onCli
 }
 
 function SecondaryButton({ href, children, external = false, className = "", onClick }) {
+  const handleClick = (e) => {
+    if (href === "#") e.preventDefault();
+    if (onClick) onClick(e);
+  };
+
   return (
     <a
       href={href}
-      onClick={onClick}
+      onClick={handleClick}
       target={external ? "_blank" : undefined}
       rel={external ? "noreferrer" : undefined}
-      className={`inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10 ${className}`}
+      className={`secondary-button inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl border border-(--glass-border-button) bg-(--glass-bg-button) backdrop-blur-xl px-6 py-3 text-sm font-bold text-(--text-button) shadow-lg hover:shadow-(--shadow-soft) transition-all duration-300 hover:scale-[1.02] hover:border-(--accent-primary)/50 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-(--accent-primary)/25 ${className}`}
     >
       {children}
     </a>
   );
 }
 
+function LinkTile({ href, label, value, icon, external = true }) {
+  const TileIcon = icon;
+  const isEmail = label.toLowerCase() === "email";
+
+  const handleClick = (e) => {
+    if (href === "#") e.preventDefault();
+  };
+
+  return (
+    <a
+      href={href}
+      onClick={handleClick}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      className={`link-tile group flex cursor-pointer items-center justify-between rounded-3xl border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl px-5 py-4 sm:p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-(--shadow-soft) hover:border-(--accent-gradient)/30 hover:bg-(--glass-bg-hover)`}
+    >
+      <div className="flex items-center gap-4">
+        <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${isEmail ? 'bg-(--accent-primary)/15 border border-(--accent-primary)/20 text-(--accent-primary)' : 'bg-(--glass-bg) border border-(--glass-border) text-(--text-secondary) group-hover:text-(--text-primary)'} transition-colors`}>
+          <TileIcon className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-xs font-bold uppercase tracking-wider text-(--text-secondary) mb-0.5">{label}</div>
+          <div className={`text-sm sm:text-base font-medium ${isEmail ? 'text-(--text-primary)' : 'text-(--text-secondary)'}`}>{value}</div>
+        </div>
+      </div>
+      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-(--glass-bg) border border-(--glass-border) group-hover:bg-(--accent-primary) group-hover:border-(--accent-primary) transition-all duration-300">
+        <ArrowUpRight className="h-4 w-4 text-(--text-secondary) group-hover:text-white transition-colors" />
+      </div>
+    </a>
+  );
+}
+
 export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState("light");
+  const [typedText, setTypedText] = useState("");
+  const shouldReduceMotion = useReducedMotion();
   const year = new Date().getFullYear();
+
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light");
+  };
+
+  useEffect(() => {
+    if (shouldReduceMotion) {
+      setTypedText(profile.intro);
+      return;
+    }
+
+    let i = 0;
+    const text = profile.intro;
+    const timer = setInterval(() => {
+      setTypedText(text.slice(0, i));
+      i++;
+      if (i > text.length) {
+        clearInterval(timer);
+      }
+    }, 50);
+
+    return () => clearInterval(timer);
+  }, [shouldReduceMotion]);
 
   const scrollToSection = (targetId) => (event) => {
     event.preventDefault();
@@ -196,7 +271,7 @@ export default function App() {
     }
 
     const closeOnResize = () => {
-      if (window.innerWidth >= 768) {
+      if (window.innerWidth >= 1024) {
         setMenuOpen(false);
       }
     };
@@ -205,461 +280,451 @@ export default function App() {
     return () => window.removeEventListener("resize", closeOnResize);
   }, [menuOpen]);
 
+  const enterAnimation = shouldReduceMotion
+    ? { initial: false, animate: false, transition: undefined }
+    : {
+        initial: { opacity: 0, y: 28 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.7, ease: "easeOut" },
+      };
+
   return (
-    <div className="min-h-screen overflow-x-clip bg-[#07111a] text-white selection:bg-cyan-300/30 selection:text-white">
-      <div className="fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.14),transparent_28%),radial-gradient(circle_at_80%_18%,rgba(251,191,36,0.16),transparent_24%),linear-gradient(to_bottom,#07111a,#0d1721,#121c26)]" />
-      <div className="fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-size-[52px_52px] mask-[radial-gradient(circle_at_center,black,transparent_85%)]" />
+    <div data-theme={theme} className="min-h-screen overflow-x-clip bg-(--bg-primary) text-(--text-primary) selection:bg-(--accent-primary)/30 selection:text-(--text-primary)">
+      <div className="pointer-events-none fixed inset-0 -z-20 bg-[radial-gradient(circle_at_top_left,rgba(178,138,85,0.14),transparent_28%),radial-gradient(circle_at_82%_14%,rgba(201,130,75,0.14),transparent_22%),linear-gradient(to_bottom,var(--bg-primary),var(--bg-secondary)_40%,var(--bg-primary))]" />
+      <div className="pointer-events-none fixed inset-0 -z-10 bg-[linear-gradient(to_right,rgba(148,163,184,0.10)_1px,transparent_1px),linear-gradient(to_bottom,rgba(148,163,184,0.10)_1px,transparent_1px)] bg-size-[68px_68px] mask-[radial-gradient(circle_at_center,black,transparent_86%)]" />
 
-      <GlowOrb className="-left-32 top-12 h-56 w-56" />
-      <GlowOrb className="-right-20 top-40 h-72 w-72" />
-      <GlowOrb className="bottom-20 left-1/4 h-64 w-64" />
+      <header className="sticky top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+        <Container className="rounded-[1.6rem] border border-(--glass-border) bg-(--glass-bg) shadow-[0_18px_50px_rgba(20,29,45,0.08)] backdrop-blur-xl">
+          <div className="flex items-center justify-between gap-4 py-4">
+            <a href="#home" onClick={scrollToSection("home")} className="flex items-center gap-3 group">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-(--accent-primary) text-white shadow-sm group-hover:scale-105 transition-transform duration-300">
+                <Layers3 className="h-5 w-5" />
+              </div>
+              <div className="min-w-0">
+                <div className="truncate text-sm font-semibold tracking-[0.08em] text-(--text-primary) uppercase sm:text-base">
+                  {profile.name}
+                </div>
+                <div className="truncate text-xs text-(--text-secondary) sm:text-sm">{profile.role}</div>
+              </div>
+            </a>
 
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[#08111a]/78 backdrop-blur-xl">
-        <div className="grid w-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center px-6 py-5 lg:px-8 xl:px-10 2xl:px-12">
-          <a
-            href="#home"
-            onClick={scrollToSection("home")}
-            className="group inline-flex items-center gap-4 justify-self-start"
-          >
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 shadow-[0_0_40px_rgba(34,211,238,0.12)] xl:h-14 xl:w-14">
-              <Layers3 className="h-5 w-5 text-cyan-200 transition-transform group-hover:scale-110" />
-            </div>
-            <div>
-              <div className="text-lg font-semibold tracking-wide text-white xl:text-xl">{profile.name}</div>
-              <div className="text-sm text-slate-400 xl:text-base">{profile.role}</div>
-            </div>
-          </a>
-
-          <nav className="hidden items-center justify-center gap-10 lg:flex xl:gap-12 2xl:gap-14">
-            {nav.map((item) => (
-              <a
-                key={item.target}
-                href={`#${item.target}`}
-                onClick={scrollToSection(item.target)}
-                className="text-base font-medium text-slate-300 transition hover:text-white xl:text-lg"
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
-
-          <div className="hidden items-center justify-self-end gap-4 lg:flex">
-            <SecondaryButton
-              href="#projects"
-              onClick={scrollToSection("projects")}
-              className="px-8 py-4 text-base xl:text-lg"
-            >
-              View Projects
-            </SecondaryButton>
-            <PrimaryButton
-              href="#contact"
-              onClick={scrollToSection("contact")}
-              className="px-8 py-4 text-base xl:text-lg"
-            >
-              Contact Me
-            </PrimaryButton>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            className="justify-self-end inline-flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-white transition hover:bg-white/10 md:hidden"
-            aria-label={menuOpen ? "Close menu" : "Open menu"}
-            aria-expanded={menuOpen}
-          >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-
-        {menuOpen ? (
-          <div className="border-t border-white/10 bg-[#0b1620]/95 px-6 py-4 backdrop-blur-xl md:hidden">
-            <div className="flex flex-col gap-3">
+            <nav className="hidden items-center gap-8 lg:flex">
               {nav.map((item) => (
                 <a
                   key={item.target}
                   href={`#${item.target}`}
                   onClick={scrollToSection(item.target)}
-                  className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-100 transition hover:bg-white/10"
+                  className="cursor-pointer text-sm font-medium text-(--text-secondary) transition hover:text-(--text-primary) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-primary)"
                 >
                   {item.label}
                 </a>
               ))}
-              <PrimaryButton href="#contact" className="w-full" onClick={scrollToSection("contact")}>
-                Contact Me
+            </nav>
+
+            <div className="hidden items-center gap-3 lg:flex">
+              <SecondaryButton href="#projects" onClick={scrollToSection("projects")}>
+                View Projects
+              </SecondaryButton>
+              <PrimaryButton href="#contact" onClick={scrollToSection("contact")}>
+                Let&apos;s Talk
               </PrimaryButton>
+              <button
+                onClick={toggleTheme}
+                className="flex h-12 w-12 items-center justify-center rounded-2xl border border-current bg-current/10 p-2 text-current transition-all hover:scale-110 focus:outline-none focus:outline-2 focus:outline-offset-2 focus:outline-accent-primary"
+                aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+              >
+                {theme === 'light' ? <Moon className="h-5 w-5" /> : <Sun className="h-5 w-5" />}
+              </button>
             </div>
+
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="inline-flex h-11 w-11 cursor-pointer items-center justify-center rounded-2xl border border-(--glass-border) bg-(--glass-bg) text-(--text-primary) shadow-sm transition hover:bg-(--glass-bg-hover) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-primary) lg:hidden"
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={menuOpen}
+            >
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
           </div>
-        ) : null}
+
+          {menuOpen ? (
+            <div className="border-t border-[#decfb9] pb-4 pt-3 lg:hidden">
+              <div className="grid gap-2">
+                {nav.map((item) => (
+                  <a
+                    key={item.target}
+                    href={`#${item.target}`}
+                    onClick={scrollToSection(item.target)}
+                    className="cursor-pointer rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-[#f2e7d8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b28a55]"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <PrimaryButton href="#contact" onClick={scrollToSection("contact")} className="mt-1 w-full">
+                  Let&apos;s Talk
+                </PrimaryButton>
+              </div>
+            </div>
+          ) : null}
+        </Container>
       </header>
 
       <main>
-        <section id="home" className="relative scroll-mt-28 overflow-hidden">
-          <div className="grid w-full min-h-[calc(100vh-5.5rem)] items-center gap-10 px-6 pb-8 pt-8 lg:grid-cols-[minmax(0,1.02fr)_minmax(26rem,0.98fr)] lg:gap-10 lg:px-8 lg:pb-8 lg:pt-10 xl:gap-14 xl:px-10 2xl:px-12">
-            <Motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.75, ease: "easeOut" }}
-              className="relative"
-            >
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-cyan-300/20 bg-cyan-300/10 px-4 py-2 text-xs font-medium uppercase tracking-[0.22em] text-cyan-100">
-                <Sparkles className="h-3.5 w-3.5" />
-                {profile.location}
-              </div>
+        <section id="home" className="scroll-mt-32 pb-18 sm:pb-24 pt-2 relative overflow-hidden">
+          <div className="pointer-events-none absolute inset-0 bg-(--accent-gradient) opacity-20 animate-pulse blur-3xl" />
+          <Container>
+            <div className="flex flex-col items-center justify-center gap-12 lg:gap-16">
+              <Motion.div {...enterAnimation} className="pt-2 sm:pt-4 lg:pt-4 xl:pt-6 flex flex-col items-center text-center max-w-4xl mx-auto">
+                <div className="inline-flex items-center gap-2 rounded-full border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl px-4 py-2 text-xs font-semibold uppercase tracking-[0.22em] shadow-lg">
+                  <MapPin className="h-3.5 w-3.5" />
+                  {profile.location}
+                </div>
 
-              <h1 className="max-w-[10.5ch] text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-[4.4rem] lg:leading-[0.97] xl:text-[5.15rem] 2xl:text-[5.75rem]">
-                Building data work that feels
-                <span className="bg-linear-to-r from-[#fff8eb] via-cyan-100 to-amber-200 bg-clip-text text-transparent">
-                  {" "}
-                  sharp, trustworthy, and useful.
-                </span>
-              </h1>
+                <h1 className="display-face gradient-text mt-8 max-w-[14ch] text-5xl leading-[0.92] font-bold tracking-tight drop-shadow-lg sm:text-6xl md:text-7xl lg:text-[5.4rem] xl:text-[6.2rem]">
+                  Data work that looks sharp and reads clearly.
+                </h1>
 
-              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg xl:max-w-3xl xl:text-[1.05rem] xl:leading-8">
-                {profile.intro}
-              </p>
+                <p className="mt-8 max-w-2xl text-lg leading-8 text-(--text-secondary) lg:text-xl typewriter-text">
+                  {typedText || profile.intro}
+                </p>
 
-              <div className="mt-9 flex flex-col gap-4 sm:flex-row">
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <PrimaryButton
-                    href="#projects"
-                    onClick={scrollToSection("projects")}
-                    className="min-h-16 px-10 py-5 text-lg font-semibold"
-                  >
+                <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row w-full sm:w-auto">
+                  <PrimaryButton href="#projects" onClick={scrollToSection("projects")} className="w-full sm:w-auto sm:min-w-44 shadow-2xl hover:shadow-glow animate-pulse [animation-duration:2s]">
                     Explore Projects
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    <ArrowRight className="h-4 w-4" />
                   </PrimaryButton>
                   <SecondaryButton
                     href={profile.resume}
                     external={profile.resume.startsWith("http")}
-                    className="min-h-16 px-10 py-5 text-lg font-semibold"
+                    className="w-full sm:w-auto sm:min-w-44 border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl"
                   >
                     View Resume
                   </SecondaryButton>
                 </div>
-              </div>
-            </Motion.div>
 
-            <Motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.85, ease: "easeOut", delay: 0.15 }}
-              className="relative"
-            >
-              <div className="absolute inset-0 rounded-4xl bg-linear-to-br from-cyan-300/15 via-amber-200/10 to-transparent blur-2xl" />
-              <div className="ml-auto w-full max-w-160 xl:max-w-2xl">
-                <div className="relative overflow-hidden rounded-4xl border border-white/10 bg-white/5 shadow-[0_20px_80px_rgba(2,8,23,0.55)] backdrop-blur-2xl">
-                  <div className="p-6 sm:p-7 xl:p-8">
-                    <div className="mb-5 flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                      <div className="max-w-md">
-                        <div className="text-base font-semibold text-white">Portfolio Snapshot</div>
-                        <div className="mt-2 text-sm leading-6 text-slate-400">{profile.tagline}</div>
+                <div className="mt-16 w-full text-left grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:gap-8 max-w-5xl mx-auto">
+                  {stats.map((stat, idx) => (
+                    <Motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 }}
+                      whileHover={{ y: -8, scale: 1.05 }}
+                      className="group rounded-[1.75rem] border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl p-6 lg:p-7 shadow-lg hover:shadow-(--shadow-glow) transition-all duration-300"
+                    >
+                      <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-(--text-secondary) group-hover:text-(--accent-primary)">
+                        {stat.label}
                       </div>
-                      <div className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs leading-5 text-emerald-300 md:max-w-60">
-                        {profile.availability}
-                      </div>
-                    </div>
-
-                    <div className="grid gap-5">
-                      <div className="rounded-3xl border border-white/10 bg-[#09131c]/70 p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="text-xs uppercase tracking-[0.18em] text-slate-400">Main Focus</div>
-                            <div className="mt-2 text-2xl font-semibold text-white xl:text-[2rem]">End-to-End Data Projects</div>
-                          </div>
-                          <LineChart className="h-8 w-8 text-cyan-200" />
-                        </div>
-
-                        <div className="mt-5 grid gap-3 text-center text-sm sm:grid-cols-3">
-                          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                            <div className="font-semibold text-white">Python</div>
-                            <div className="mt-1 text-xs text-slate-400">Analysis</div>
-                          </div>
-                          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                            <div className="font-semibold text-white">SQL</div>
-                            <div className="mt-1 text-xs text-slate-400">Modeling</div>
-                          </div>
-                          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-                            <div className="font-semibold text-white">React</div>
-                            <div className="mt-1 text-xs text-slate-400">Presentation</div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                          <div className="text-xs uppercase tracking-[0.18em] text-slate-400">Strength</div>
-                          <div className="mt-2 text-xl font-semibold text-white">Analytics + Pipelines</div>
-                          <p className="mt-3 text-sm leading-7 text-slate-300">
-                            I like projects that move from raw data to insight, not just one isolated step.
-                          </p>
-                        </div>
-                        <div className="rounded-3xl border border-white/10 bg-white/5 p-5">
-                          <div className="text-xs uppercase tracking-[0.18em] text-slate-400">Presentation</div>
-                          <div className="mt-2 text-xl font-semibold text-white">Clean & Intentional</div>
-                          <p className="mt-3 text-sm leading-7 text-slate-300">
-                            My portfolio is designed to communicate technical depth with a calm, premium first impression.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <Motion.div
-                  variants={staggerWrap}
-                  initial="hidden"
-                  animate="visible"
-                  className="mt-4 grid gap-3 sm:grid-cols-3"
-                >
-                  {stats.map((stat) => (
-                    <Motion.div key={stat.label} variants={sectionFade}>
-                      <div className="h-full min-h-34 rounded-3xl border border-white/10 bg-[#09131c]/70 p-5 shadow-2xl shadow-cyan-950/10 backdrop-blur-xl">
-                        <div className="text-xs uppercase tracking-[0.18em] text-slate-400">{stat.label}</div>
-                        <div className="mt-3 text-base font-semibold text-white">{stat.value}</div>
-                      </div>
+                      <div className="mt-3 text-lg leading-6 font-bold gradient-text">{stat.value}</div>
                     </Motion.div>
                   ))}
-                </Motion.div>
-              </div>
-            </Motion.div>
-          </div>
-
-          <Motion.a
-            href="#about"
-            onClick={scrollToSection("about")}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, y: [0, 10, 0] }}
-            transition={{ duration: 2.3, repeat: Infinity, ease: "easeInOut" }}
-            className="mx-auto mb-3 flex w-fit items-center gap-2 text-sm text-slate-400 transition hover:text-white"
-          >
-            Scroll to explore
-            <ChevronDown className="h-4 w-4" />
-          </Motion.a>
-        </section>
-
-        <Motion.section
-          id="about"
-          className="w-full scroll-mt-28 px-6 py-24 lg:px-8 xl:px-10 2xl:px-12"
-          variants={sectionFade}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.2 }}
-        >
-          <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-            <SectionHeading
-              eyebrow="About"
-              title="A portfolio built to show both analytical depth and implementation skill."
-              description={profile.about}
-            />
-
-            <div className="grid gap-5">
-              <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-                <div className="text-sm font-medium text-white">What I bring</div>
-                <p className="mt-3 text-sm leading-7 text-slate-300">
-                  A mix of Python-based analysis, SQL thinking, ETL workflow building, and portfolio presentation that makes the work easier to understand and trust.
-                </p>
-              </div>
-
-              <div className="grid gap-5 sm:grid-cols-2">
-                <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-                  <div className="text-sm font-medium text-white">Current Direction</div>
-                  <p className="mt-3 text-sm leading-7 text-slate-300">
-                    Data Analyst, Business Intelligence, Junior Data Engineer, and end-to-end analytics roles.
-                  </p>
                 </div>
+              </Motion.div>
 
-                <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl">
-                  <div className="text-sm font-medium text-white">Preferred Stack</div>
-                  <p className="mt-3 text-sm leading-7 text-slate-300">
-                    React, Tailwind, Python, Pandas, PostgreSQL, Jupyter, Streamlit, and GitHub.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Motion.section>
-
-        <Motion.section
-          id="skills"
-          className="w-full scroll-mt-28 px-6 py-24 lg:px-8 xl:px-10 2xl:px-12"
-          variants={sectionFade}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.15 }}
-        >
-          <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <SectionHeading
-              eyebrow="Skills"
-              title="Grounded in strong fundamentals and built for practical project work."
-              description="These are the core strengths this portfolio is meant to signal quickly: analysis, querying, pipeline thinking, and clear communication."
-            />
-          </div>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.1 }}
-            className="grid gap-5 md:grid-cols-2 xl:grid-cols-4"
-          >
-            {skills.map((skill) => {
-              const Icon = skill.icon;
-
-              return (
-                <Motion.div key={skill.title} variants={sectionFade}>
-                  <div className="group h-full rounded-[1.75rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:bg-white/[0.07]">
-                    <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 shadow-inner shadow-white/5">
-                      <Icon className="h-5 w-5 text-cyan-200 transition group-hover:scale-110" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white">{skill.title}</h3>
-                    <p className="mt-3 text-sm leading-7 text-slate-300">{skill.desc}</p>
-                  </div>
-                </Motion.div>
-              );
-            })}
-          </Motion.div>
-        </Motion.section>
-
-        <Motion.section
-          id="projects"
-          className="w-full scroll-mt-28 px-6 py-24 lg:px-8 xl:px-10 2xl:px-12"
-          variants={sectionFade}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ amount: 0.15 }}
-        >
-          <div className="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <SectionHeading
-              eyebrow="Projects"
-              title="Selected work that shows both reasoning and technical execution."
-              description="Each project is framed to highlight the problem, the workflow, and the business value behind the final result."
-            />
-            <SecondaryButton href="#contact" onClick={scrollToSection("contact")} className="w-fit">
-              Let&apos;s Connect
-            </SecondaryButton>
-          </div>
-
-          <Motion.div
-            variants={staggerWrap}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ amount: 0.08 }}
-            className="grid gap-6 xl:grid-cols-3"
-          >
-            {projects.map((project, idx) => (
-              <Motion.div key={project.title} variants={sectionFade}>
-                <div className="group h-full overflow-hidden rounded-4xl border border-white/10 bg-white/5 backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:bg-white/[0.07]">
-                  <div className="relative border-b border-white/10 p-6">
-                    <div className="absolute inset-0 bg-linear-to-br from-cyan-300/10 via-amber-200/5 to-transparent opacity-0 transition duration-300 group-hover:opacity-100" />
-                    <div className="relative">
-                      <div className="mb-4 inline-flex rounded-full border border-cyan-300/20 bg-cyan-300/10 px-3 py-1 text-xs text-cyan-100">
-                        {project.tag}
+              <Motion.div
+                {...(shouldReduceMotion
+                  ? { initial: false, animate: false }
+                  : {
+                      initial: { opacity: 0, y: 32 },
+                      animate: { opacity: 1, y: 0 },
+                      transition: { duration: 0.8, ease: "easeOut", delay: 0.08 },
+                    })}
+                className="relative w-full max-w-5xl mx-auto mt-6 sm:mt-12"
+              >
+                <div className="rounded-4xl border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl p-6 shadow-(--shadow-soft) sm:p-8 lg:p-9 xl:p-10">
+                  <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#decfb9] pb-6">
+                    <div className="max-w-sm">
+                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Portfolio Snapshot</div>
+                      <div className="display-face mt-3 text-2xl font-semibold text-slate-950 sm:text-3xl">
+                        {profile.tagline}
                       </div>
-                      <div className="text-2xl font-semibold text-white">0{idx + 1}</div>
-                      <h3 className="mt-3 text-xl font-semibold text-white">{project.title}</h3>
-                      <p className="mt-3 text-sm leading-7 text-slate-300">{project.desc}</p>
+                    </div>
+                    <div className="rounded-full bg-[#f4eadb] px-4 py-2 text-sm font-medium text-[#8f6d3b]">
+                      {profile.availability}
                     </div>
                   </div>
 
-                  <div className="p-6">
-                    <div className="mb-4 text-xs uppercase tracking-[0.18em] text-slate-400">Stack</div>
-                    <div className="flex flex-wrap gap-2">
-                      {project.stack.map((item) => (
-                        <span
-                          key={item}
-                          className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200"
-                        >
-                          {item}
-                        </span>
-                      ))}
+                  <div className="grid gap-4 pt-6">
+                    <div className="rounded-[1.75rem] bg-[#162235] p-6 text-white">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                            Main Focus
+                          </div>
+                          <div className="display-face mt-3 text-2xl leading-tight font-semibold sm:text-[2rem]">
+                            End-to-end data projects with credible delivery.
+                          </div>
+                        </div>
+                        <BriefcaseBusiness className="mt-1 h-6 w-6 text-[#d6b780]" />
+                      </div>
                     </div>
 
-                    <div className="mt-6 flex gap-3">
-                      <SecondaryButton href={project.caseStudy} external={project.caseStudy.startsWith("http")}>
-                        Case Study
-                      </SecondaryButton>
-                      <PrimaryButton href={project.github} external={project.github.startsWith("http")}>
-                        GitHub
-                      </PrimaryButton>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      <div className="rounded-[1.75rem] border border-[#decfb9] bg-[#f4eadb] p-5">
+                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-500">Current Direction</div>
+                        <p className="mt-3 text-sm leading-7 text-slate-700">
+                          Analyst, BI, junior data engineering, and practical roles that connect business questions to implementation.
+                        </p>
+                      </div>
+                      <div className="rounded-[1.75rem] border border-[#decfb9] bg-[#f4eadb] p-5">
+                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-500">Preferred Stack</div>
+                        <p className="mt-3 text-sm leading-7 text-slate-700">
+                          Python, SQL, PostgreSQL, Pandas, React, and a presentation layer that feels deliberate.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
               </Motion.div>
-            ))}
-          </Motion.div>
-        </Motion.section>
+
+
+            </div>
+
+            <Motion.a
+              href="#about"
+              onClick={scrollToSection("about")}
+              initial={shouldReduceMotion ? false : { opacity: 0 }}
+              animate={shouldReduceMotion ? undefined : { opacity: 1, y: [0, 8, 0] }}
+              transition={shouldReduceMotion ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+              className="mt-12 lg:mt-16 mx-auto flex w-fit cursor-pointer items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b28a55]"
+            >
+              Scroll to explore
+              <ChevronDown className="h-4 w-4" />
+            </Motion.a>
+          </Container>
+        </section>
 
         <Motion.section
-          id="contact"
-          className="w-full scroll-mt-28 px-6 pb-24 pt-10 lg:px-8 xl:px-10 2xl:px-12"
+          id="about"
+          className="scroll-mt-28 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
           variants={sectionFade}
           initial="hidden"
           whileInView="visible"
-          viewport={{ amount: 0.12 }}
+          viewport={{ amount: 0.2, once: true }}
         >
-          <div className="overflow-hidden rounded-4xl border border-white/10 bg-white/5 backdrop-blur-2xl">
-            <div className="relative p-8 sm:p-10 lg:p-12">
-              <div className="absolute inset-0 bg-linear-to-br from-cyan-300/10 via-amber-200/5 to-transparent" />
-              <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-                <div>
-                  <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.18em] text-slate-300">
-                    <Mail className="h-3.5 w-3.5" />
-                    Contact
-                  </div>
-                  <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-                    Let&apos;s build something meaningful with data.
-                  </h2>
-                  <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-                    I&apos;m open to collaboration, learning opportunities, and roles where I can keep growing through practical data work.
+          <Container>
+            <div className="grid gap-10 lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1.08fr)] lg:gap-14">
+              <SectionHeading
+                eyebrow="About"
+                title="Built to show both analytical depth and implementation discipline."
+                description={profile.about}
+              />
+
+              <div className="grid gap-5">
+                <div className="rounded-4xl border border-[#decfb9] bg-[#fffaf2] p-6 shadow-sm sm:p-7">
+                  <div className="text-sm font-semibold text-slate-950">What I bring</div>
+                  <p className="mt-3 text-base leading-8 text-slate-600">
+                    A mix of analysis, SQL thinking, ETL workflow building, and portfolio presentation that makes the work easier to understand quickly.
                   </p>
                 </div>
 
-                <div className="grid gap-4">
-                  <a
-                    href={`mailto:${profile.email}`}
-                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#09131c]/70 px-5 py-4 transition hover:border-cyan-300/30 hover:bg-[#0c1822]"
-                  >
-                    <div>
-                      <div className="text-sm font-medium text-white">Email</div>
-                      <div className="mt-1 text-sm text-slate-400">{profile.email}</div>
-                    </div>
-                    <ExternalLink className="h-4 w-4 text-slate-400" />
-                  </a>
-
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    <a
-                      href={profile.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#09131c]/70 px-5 py-4 transition hover:border-cyan-300/30 hover:bg-[#0c1822]"
-                    >
-                      <GitBranch className="h-4 w-4 text-slate-300" />
-                      <span className="text-sm text-white">GitHub</span>
-                    </a>
-                    <a
-                      href={profile.linkedin}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-[#09131c]/70 px-5 py-4 transition hover:border-cyan-300/30 hover:bg-[#0c1822]"
-                    >
-                      <Link2 className="h-4 w-4 text-slate-300" />
-                      <span className="text-sm text-white">LinkedIn</span>
-                    </a>
+                <div className="grid gap-5 sm:grid-cols-2">
+                  <div className="rounded-4xl border border-[#decfb9] bg-[#f4eadb] p-6">
+                    <div className="text-sm font-semibold text-slate-950">Working Style</div>
+                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                      Structured, practical, and focused on making outputs reliable before making them look polished.
+                    </p>
+                  </div>
+                  <div className="rounded-4xl border border-[#decfb9] bg-[#f4eadb] p-6">
+                    <div className="text-sm font-semibold text-slate-950">What Matters</div>
+                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                      Clean thinking, sensible tools, and communication that reduces ambiguity instead of adding noise.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </Container>
+        </Motion.section>
+
+        <Motion.section
+          id="skills"
+          className="scroll-mt-28 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
+          variants={sectionFade}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.15, once: true }}
+        >
+          <Container>
+            <div className="mb-12 lg:mb-16 flex flex-col justify-center">
+              <SectionHeading
+                centered
+                eyebrow="Skills"
+                title="Strong fundamentals, arranged around practical project work."
+                description="The goal here is clarity: analysis, querying, pipelines, and communication skills that support full project delivery."
+              />
+            </div>
+
+            <Motion.div
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.1, once: true }}
+              className="grid gap-6 md:grid-cols-2 lg:gap-8 xl:grid-cols-4 2xl:gap-10"
+            >
+              {strengths.map((skill) => {
+                const Icon = skill.icon;
+
+                return (
+                  <Motion.div 
+                    key={skill.title} 
+                    variants={sectionFade}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      rotateX: 5, 
+                      rotateY: 5,
+                      y: -10 
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    style={{ transformPerspective: 1000 }}
+                    className="group h-full rounded-4xl border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl p-6 lg:p-7 xl:p-8 shadow-xl hover:shadow-(--shadow-glow) hover:border-(--accent-primary)/30 transition-all duration-500"
+                  >
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-(--glass-bg)/50 backdrop-blur-xl group-hover:bg-(--accent-gradient)/20">
+                      <Icon className="h-6 w-6 text-(--accent-primary) group-hover:scale-110 transition-transform" />
+                    </div>
+                    <h3 className="mt-6 text-2xl font-bold gradient-text group-hover:scale-[1.02]">{skill.title}</h3>
+                    <p className="mt-4 text-base leading-relaxed text-(--text-secondary)">{skill.desc}</p>
+                  </Motion.div>
+                );
+              })}
+            </Motion.div>
+          </Container>
+        </Motion.section>
+
+        <Motion.section
+          id="projects"
+          className="scroll-mt-28 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
+          variants={sectionFade}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.14, once: true }}
+        >
+          <Container>
+            <div className="mb-4 lg:mb-8 flex flex-col items-center justify-center">
+              <SectionHeading
+                centered
+                eyebrow="Projects"
+                title="Selected work with both reasoning and technical execution."
+                description="Each case highlights the problem, the workflow, and the business value instead of just showing a finished chart."
+              />
+            </div>
+
+            <Motion.div
+              variants={staggerWrap}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ amount: 0.08, once: true }}
+              className="grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3"
+            >
+              {projects.map((project, idx) => (
+                <Motion.article 
+                  key={project.title} 
+                  variants={sectionFade}
+                  whileHover={{ 
+                    scale: 1.03, 
+                    rotateX: 3, 
+                    rotateY: 3,
+                    y: -12 
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  style={{ transformPerspective: 1000 }}
+                >
+                  <div className="group flex h-full flex-col overflow-hidden rounded-4xl border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl shadow-2xl hover:shadow-(--shadow-glow) transition-all duration-500 hover:border-(--accent-gradient)/20">
+                    <div className="border-b border-(--glass-border)/50 bg-(--glass-bg)/70 p-6 sm:p-7 backdrop-blur-xl">
+                      <div className="flex items-start justify-between gap-4">
+                        <span className="rounded-full bg-(--accent-gradient)/20 px-4 py-2 text-xs font-bold text-(--accent-primary) border border-(--accent-primary)/30">
+                          {project.tag}
+                        </span>
+                        <span className="display-face text-xl font-black text-(--text-secondary) opacity-75">0{idx + 1}</span>
+                      </div>
+                      <h3 className="mt-5 text-xl leading-tight font-bold gradient-text drop-shadow-lg sm:text-2xl">{project.title}</h3>
+                      <p className="mt-3 text-sm sm:text-base leading-relaxed text-(--text-secondary)">{project.desc}</p>
+                    </div>
+
+                    <div className="flex flex-1 flex-col p-6 sm:p-7">
+                      <div className="text-xs font-bold uppercase tracking-wider text-(--text-secondary) mb-4">Tech Stack</div>
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {project.stack.map((item) => (
+                          <span
+                            key={item}
+                            className="rounded-full border border-(--glass-border) bg-(--glass-bg)/50 backdrop-blur-xl px-3 py-1.5 text-xs font-semibold text-(--text-primary) hover:bg-(--accent-primary) hover:text-white transition-all"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+
+                      <div className="flex flex-col gap-4 sm:flex-row">
+                        <SecondaryButton href={project.caseStudy} external={project.caseStudy.startsWith("http")} className="flex-1">
+                          Case Study
+                        </SecondaryButton>
+                        <PrimaryButton href={project.github} external={project.github.startsWith("http")} className="flex-1">
+                          View Code <ArrowRight className="ml-1 h-4 w-4" />
+                        </PrimaryButton>
+                      </div>
+                    </div>
+                  </div>
+                </Motion.article>
+              ))}
+            </Motion.div>
+          </Container>
+        </Motion.section>
+
+        <Motion.section
+          id="contact"
+          className="scroll-mt-28 pt-2 pb-16 sm:pb-20 lg:pt-4 lg:pb-24"
+          variants={sectionFade}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ amount: 0.12, once: true }}
+        >
+          <Container>
+            <div className="rounded-[2.25rem] border border-(--accent-gradient)/30 bg-(--accent-gradient)/5 backdrop-blur-3xl p-2 shadow-(--shadow-glow) sm:p-3 relative overflow-hidden group">
+              <div className="pointer-events-none absolute inset-0 bg-(--accent-gradient) opacity-10 group-hover:opacity-20 transition-opacity duration-1000 blur-3xl"></div>
+              
+              <div className="rounded-4xl bg-(--glass-bg) backdrop-blur-xl p-8 sm:p-10 lg:p-12 text-(--text-primary) shadow-2xl border border-(--glass-border) relative z-10">
+                <div className="grid gap-12 lg:grid-cols-2 lg:items-center xl:gap-16">
+                  <div className="flex flex-col items-start justify-center">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-(--accent-primary)/30 bg-(--accent-gradient)/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] backdrop-blur-xl text-(--accent-primary)">
+                      <Mail className="h-4 w-4" />
+                      Get In Touch
+                    </div>
+                    <h2 className="display-face mt-6 text-4xl leading-tight font-black gradient-text sm:text-5xl lg:text-[3.5rem] tracking-tight">
+                      Let's build something useful with data.
+                    </h2>
+                    <p className="mt-6 text-base sm:text-lg leading-relaxed text-(--text-secondary) max-w-lg">
+                      I'm open to collaboration, learning opportunities, and roles where I can keep improving through practical work.
+                    </p>
+                    
+                    <div className="mt-8 sm:mt-12">
+                      <PrimaryButton href={profile.resume} className="px-8 py-4 shadow-(--shadow-glow) hover:shadow-none hover:-translate-y-1 transition-all duration-300">
+                        Download My Resume
+                      </PrimaryButton>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 sm:gap-6">
+                    <LinkTile href={`mailto:${profile.email}`} label="Email" value={profile.email} icon={Mail} external={false} />
+                    <div className="grid gap-4 sm:gap-6 sm:grid-cols-2">
+                      <LinkTile href={profile.github} label="GitHub" value="@ahmd-byte" icon={GitBranch} />
+                      <LinkTile href={profile.linkedin} label="LinkedIn" value="Connect professionally" icon={Link2} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Container>
         </Motion.section>
       </main>
 
-      <footer className="border-t border-white/10">
-        <div className="flex w-full flex-col gap-3 px-6 py-6 text-sm text-slate-400 sm:flex-row sm:items-center sm:justify-between lg:px-8 xl:px-10 2xl:px-12">
+      <footer className="border-t border-[#decfb9] pt-6 pb-[30vh] lg:pb-[40vh]">
+        <Container className="flex flex-col gap-3 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
           <div>
-            (c) {year} {profile.name}. Built with React, Tailwind, Framer Motion, and a love for clear data storytelling.
+            (c) {year} {profile.name}. Built with React, Tailwind, Framer Motion, and a focus on clear data storytelling.
           </div>
           <div>Replace the placeholder links in the `profile` object before publishing.</div>
-        </div>
+        </Container>
       </footer>
     </div>
   );

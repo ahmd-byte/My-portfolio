@@ -5,6 +5,7 @@
   --bg-primary: #fdf8f3;
   --bg-secondary: #fffaf5;
   --glass-bg: rgba(255, 255, 255, 0.35);
+  --glass-bg-hover: rgba(255, 255, 255, 0.45);
   --glass-bg-button: rgba(255, 255, 255, 0.5);
   --glass-border: rgba(255, 255, 255, 0.25);
   --glass-border-button: rgba(255, 255, 255, 0.4);
@@ -31,6 +32,7 @@
   --bg-primary: #0f172a;
   --bg-secondary: #1e293b;
   --glass-bg: rgba(30, 41, 59, 0.5);
+  --glass-bg-hover: rgba(30, 41, 59, 0.65);
   --glass-bg-button: rgba(51, 65, 85, 0.6);
   --glass-border: rgba(148, 163, 184, 0.3);
   --glass-border-button: rgba(148, 163, 184, 0.5);

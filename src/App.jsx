@@ -131,14 +131,14 @@ function Container({ className = "", children }) {
 function SectionHeading({ eyebrow, title, description, centered = false }) {
   return (
     <div className={`w-full ${centered ? "max-w-4xl mx-auto text-center flex flex-col items-center" : "max-w-2xl"}`}>
-      <div className={`inline-flex items-center gap-2 rounded-full border border-[#d9c7a8] bg-[#fffaf2] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#8b6a37] shadow-sm`}>
+      <div className={`inline-flex items-center gap-2 rounded-full border border-(--glass-border) bg-(--glass-bg) px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-(--accent-primary) shadow-sm`}>
         <Sparkles className="h-3.5 w-3.5" />
         {eyebrow}
       </div>
-      <h2 className="display-face mt-5 text-3xl leading-tight font-semibold tracking-tight text-slate-950 sm:text-4xl lg:text-[2.9rem]">
+      <h2 className="display-face mt-5 text-3xl leading-tight font-semibold tracking-tight text-(--text-primary) sm:text-4xl lg:text-[2.9rem]">
         {title}
       </h2>
-      <p className="mt-4 max-w-xl text-base leading-8 text-slate-600">{description}</p>
+      <p className="mt-4 max-w-xl text-base leading-8 text-(--text-secondary)">{description}</p>
     </div>
   );
 }
@@ -349,14 +349,14 @@ export default function App() {
           </div>
 
           {menuOpen ? (
-            <div className="border-t border-[#decfb9] pb-4 pt-3 lg:hidden">
+            <div className="border-t border-(--glass-border) pb-4 pt-3 lg:hidden">
               <div className="grid gap-2">
                 {nav.map((item) => (
                   <a
                     key={item.target}
                     href={`#${item.target}`}
                     onClick={scrollToSection(item.target)}
-                    className="cursor-pointer rounded-2xl px-4 py-3 text-sm font-medium text-slate-700 transition hover:bg-[#f2e7d8] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b28a55]"
+                    className="cursor-pointer rounded-2xl px-4 py-3 text-sm font-medium text-(--text-secondary) transition hover:bg-(--glass-bg-hover) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-primary)"
                   >
                     {item.label}
                   </a>
@@ -435,41 +435,41 @@ export default function App() {
                 <div className="rounded-4xl border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl p-6 shadow-(--shadow-soft) sm:p-8 lg:p-9 xl:p-10">
                   <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#decfb9] pb-6">
                     <div className="max-w-sm">
-                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">Portfolio Snapshot</div>
-                      <div className="display-face mt-3 text-2xl font-semibold text-slate-950 sm:text-3xl">
+                      <div className="text-sm font-semibold uppercase tracking-[0.18em] text-(--text-secondary)">Portfolio Snapshot</div>
+                      <div className="display-face mt-3 text-2xl font-semibold text-(--text-primary) sm:text-3xl">
                         {profile.tagline}
                       </div>
                     </div>
-                    <div className="rounded-full bg-[#f4eadb] px-4 py-2 text-sm font-medium text-[#8f6d3b]">
+                    <div className="rounded-full bg-(--glass-bg) border border-(--glass-border) px-4 py-2 text-sm font-medium text-(--accent-primary)">
                       {profile.availability}
                     </div>
                   </div>
 
                   <div className="grid gap-4 pt-6">
-                    <div className="rounded-[1.75rem] bg-[#162235] p-6 text-white">
+                    <div className="rounded-[1.75rem] border border-(--glass-border) bg-(--glass-bg) p-6 text-(--text-primary)">
                       <div className="flex items-start justify-between gap-4">
                         <div>
-                          <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-400">
+                          <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-(--text-secondary)">
                             Main Focus
                           </div>
                           <div className="display-face mt-3 text-2xl leading-tight font-semibold sm:text-[2rem]">
                             End-to-end data projects with credible delivery.
                           </div>
                         </div>
-                        <BriefcaseBusiness className="mt-1 h-6 w-6 text-[#d6b780]" />
+                        <BriefcaseBusiness className="mt-1 h-6 w-6 text-(--accent-primary)" />
                       </div>
                     </div>
 
                     <div className="grid gap-4 sm:grid-cols-2">
-                      <div className="rounded-[1.75rem] border border-[#decfb9] bg-[#f4eadb] p-5">
-                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-500">Current Direction</div>
-                        <p className="mt-3 text-sm leading-7 text-slate-700">
+                      <div className="rounded-[1.75rem] border border-(--glass-border) bg-(--glass-bg) p-5">
+                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-(--text-secondary)">Current Direction</div>
+                        <p className="mt-3 text-sm leading-7 text-(--text-secondary)">
                           Analyst, BI, junior data engineering, and practical roles that connect business questions to implementation.
                         </p>
                       </div>
-                      <div className="rounded-[1.75rem] border border-[#decfb9] bg-[#f4eadb] p-5">
-                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-slate-500">Preferred Stack</div>
-                        <p className="mt-3 text-sm leading-7 text-slate-700">
+                      <div className="rounded-[1.75rem] border border-(--glass-border) bg-(--glass-bg) p-5">
+                        <div className="text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-(--text-secondary)">Preferred Stack</div>
+                        <p className="mt-3 text-sm leading-7 text-(--text-secondary)">
                           Python, SQL, PostgreSQL, Pandas, React, and a presentation layer that feels deliberate.
                         </p>
                       </div>
@@ -487,7 +487,7 @@ export default function App() {
               initial={shouldReduceMotion ? false : { opacity: 0 }}
               animate={shouldReduceMotion ? undefined : { opacity: 1, y: [0, 8, 0] }}
               transition={shouldReduceMotion ? undefined : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
-              className="mt-12 lg:mt-16 mx-auto flex w-fit cursor-pointer items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#b28a55]"
+              className="mt-12 lg:mt-16 mx-auto flex w-fit cursor-pointer items-center gap-2 text-sm font-medium text-(--text-secondary) transition hover:text-(--text-primary) focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-(--accent-primary)"
             >
               Scroll to explore
               <ChevronDown className="h-4 w-4" />
@@ -512,23 +512,23 @@ export default function App() {
               />
 
               <div className="grid gap-5">
-                <div className="rounded-4xl border border-[#decfb9] bg-[#fffaf2] p-6 shadow-sm sm:p-7">
-                  <div className="text-sm font-semibold text-slate-950">What I bring</div>
-                  <p className="mt-3 text-base leading-8 text-slate-600">
+                <div className="rounded-4xl border border-(--glass-border) bg-(--glass-bg) p-6 shadow-sm sm:p-7 backdrop-blur-xl">
+                  <div className="text-sm font-semibold text-(--text-primary)">What I bring</div>
+                  <p className="mt-3 text-base leading-8 text-(--text-secondary)">
                     A mix of analysis, SQL thinking, ETL workflow building, and portfolio presentation that makes the work easier to understand quickly.
                   </p>
                 </div>
 
                 <div className="grid gap-5 sm:grid-cols-2">
-                  <div className="rounded-4xl border border-[#decfb9] bg-[#f4eadb] p-6">
-                    <div className="text-sm font-semibold text-slate-950">Working Style</div>
-                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                  <div className="rounded-4xl border border-(--glass-border) bg-(--glass-bg) p-6 backdrop-blur-xl">
+                    <div className="text-sm font-semibold text-(--text-primary)">Working Style</div>
+                    <p className="mt-3 text-sm leading-7 text-(--text-secondary)">
                       Structured, practical, and focused on making outputs reliable before making them look polished.
                     </p>
                   </div>
-                  <div className="rounded-4xl border border-[#decfb9] bg-[#f4eadb] p-6">
-                    <div className="text-sm font-semibold text-slate-950">What Matters</div>
-                    <p className="mt-3 text-sm leading-7 text-slate-600">
+                  <div className="rounded-4xl border border-(--glass-border) bg-(--glass-bg) p-6 backdrop-blur-xl">
+                    <div className="text-sm font-semibold text-(--text-primary)">What Matters</div>
+                    <p className="mt-3 text-sm leading-7 text-(--text-secondary)">
                       Clean thinking, sensible tools, and communication that reduces ambiguity instead of adding noise.
                     </p>
                   </div>
@@ -718,12 +718,11 @@ export default function App() {
         </Motion.section>
       </main>
 
-      <footer className="border-t border-[#decfb9] pt-6 pb-[30vh] lg:pb-[40vh]">
-        <Container className="flex flex-col gap-3 text-sm text-slate-500 md:flex-row md:items-center md:justify-between">
+      <footer className="border-t border-(--glass-border) pt-6 pb-[30vh] lg:pb-[40vh]">
+        <Container className="flex flex-col gap-3 text-sm text-(--text-secondary) md:flex-row md:items-center md:justify-between">
           <div>
             (c) {year} {profile.name}. Built with React, Tailwind, Framer Motion, and a focus on clear data storytelling.
           </div>
-          <div>Replace the placeholder links in the `profile` object before publishing.</div>
         </Container>
       </footer>
     </div>

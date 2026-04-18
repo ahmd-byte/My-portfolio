@@ -76,19 +76,19 @@ const strengths = [
 const projects = [
   {
     title: "Sales Performance Analysis",
-    tag: "Business Analytics",
-    desc: "Analyzed regional, category, and monthly sales performance to pinpoint revenue drivers and where growth was stalling.",
-    stack: ["Python", "Pandas", "SQL", "Matplotlib"],
+    tag: "Data Analyst",
+    desc: "Analyzed retail sales trends, regional performance, customer segments, top products, and shipping efficiency using Python, Pandas, and Matplotlib..",
+    stack: ["Python", "Pandas", "Matplotlib", "Jupyter"],
     caseStudy: "#",
-    github: "#",
+    github: "https://github.com/ahmd-byte/sales-perfomance-analysis",
   },
   {
     title: "Customer Churn Analysis",
     tag: "Retention Analytics",
     desc: "Segmented customer behavior, identified churn risk patterns, and highlighted opportunities for stronger retention strategy.",
-    stack: ["Python", "Pandas", "Scikit-learn", "Visualization"],
+    stack: ["Python", "Pandas", "Matplotlib", "Jupyter"],
     caseStudy: "#",
-    github: "#",
+    github: "https://github.com/ahmd-byte/customer-churn-analysis.git",
   },
   {
     title: "PostgreSQL ETL Workflow",

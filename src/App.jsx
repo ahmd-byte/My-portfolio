@@ -88,7 +88,7 @@ const projects = [
     desc: "Segmented customer behavior, identified churn risk patterns, and highlighted opportunities for stronger retention strategy.",
     stack: ["Python", "Pandas", "Matplotlib", "Jupyter"],
     caseStudy: "#",
-    github: "https://github.com/ahmd-byte/customer-churn-analysis.git",
+    github: "https://github.com/ahmd-byte/customer-churn-analysis",
   },
   {
     title: "PostgreSQL ETL Workflow",

@@ -283,10 +283,10 @@ export default function App() {
   const enterAnimation = shouldReduceMotion
     ? { initial: false, animate: false, transition: undefined }
     : {
-        initial: { opacity: 0, y: 28 },
-        animate: { opacity: 1, y: 0 },
-        transition: { duration: 0.7, ease: "easeOut" },
-      };
+      initial: { opacity: 0, y: 28 },
+      animate: { opacity: 1, y: 0 },
+      transition: { duration: 0.7, ease: "easeOut" },
+    };
 
   return (
     <div data-theme={theme} className="min-h-screen overflow-x-clip bg-(--bg-primary) text-(--text-primary) selection:bg-(--accent-primary)/30 selection:text-(--text-primary)">
@@ -371,7 +371,7 @@ export default function App() {
       </header>
 
       <main>
-        <section id="home" className="scroll-mt-32 pb-18 sm:pb-24 pt-2 relative overflow-hidden">
+        <section id="home" className="scroll-mt-40 pb-18 sm:pb-24 pt-2 relative overflow-hidden">
           <div className="pointer-events-none absolute inset-0 bg-(--accent-gradient) opacity-20 animate-pulse blur-3xl" />
           <Container>
             <div className="flex flex-col items-center justify-center gap-12 lg:gap-16">
@@ -426,10 +426,10 @@ export default function App() {
                 {...(shouldReduceMotion
                   ? { initial: false, animate: false }
                   : {
-                      initial: { opacity: 0, y: 32 },
-                      animate: { opacity: 1, y: 0 },
-                      transition: { duration: 0.8, ease: "easeOut", delay: 0.08 },
-                    })}
+                    initial: { opacity: 0, y: 32 },
+                    animate: { opacity: 1, y: 0 },
+                    transition: { duration: 0.8, ease: "easeOut", delay: 0.08 },
+                  })}
                 className="relative w-full max-w-5xl mx-auto mt-6 sm:mt-12"
               >
                 <div className="rounded-4xl border border-(--glass-border) bg-(--glass-bg) backdrop-blur-xl p-6 shadow-(--shadow-soft) sm:p-8 lg:p-9 xl:p-10">
@@ -497,7 +497,7 @@ export default function App() {
 
         <Motion.section
           id="about"
-          className="scroll-mt-28 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
+          className="scroll-mt-40 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
           variants={sectionFade}
           initial="hidden"
           whileInView="visible"
@@ -540,7 +540,7 @@ export default function App() {
 
         <Motion.section
           id="skills"
-          className="scroll-mt-28 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
+          className="scroll-mt-40 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
           variants={sectionFade}
           initial="hidden"
           whileInView="visible"
@@ -567,14 +567,14 @@ export default function App() {
                 const Icon = skill.icon;
 
                 return (
-                  <Motion.div 
-                    key={skill.title} 
+                  <Motion.div
+                    key={skill.title}
                     variants={sectionFade}
-                    whileHover={{ 
-                      scale: 1.05, 
-                      rotateX: 5, 
+                    whileHover={{
+                      scale: 1.05,
+                      rotateX: 5,
                       rotateY: 5,
-                      y: -10 
+                      y: -10
                     }}
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     style={{ transformPerspective: 1000 }}
@@ -594,7 +594,7 @@ export default function App() {
 
         <Motion.section
           id="projects"
-          className="scroll-mt-28 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
+          className="scroll-mt-40 pt-2 pb-12 sm:pb-16 lg:pt-4 lg:pb-20"
           variants={sectionFade}
           initial="hidden"
           whileInView="visible"
@@ -618,14 +618,14 @@ export default function App() {
               className="grid gap-6 sm:grid-cols-2 lg:gap-8 xl:grid-cols-3"
             >
               {projects.map((project, idx) => (
-                <Motion.article 
-                  key={project.title} 
+                <Motion.article
+                  key={project.title}
                   variants={sectionFade}
-                  whileHover={{ 
-                    scale: 1.03, 
-                    rotateX: 3, 
+                  whileHover={{
+                    scale: 1.03,
+                    rotateX: 3,
                     rotateY: 3,
-                    y: -12 
+                    y: -12
                   }}
                   transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   style={{ transformPerspective: 1000 }}
@@ -673,7 +673,7 @@ export default function App() {
 
         <Motion.section
           id="contact"
-          className="scroll-mt-28 pt-2 pb-16 sm:pb-20 lg:pt-4 lg:pb-24"
+          className="scroll-mt-40 pt-2 pb-16 sm:pb-20 lg:pt-4 lg:pb-24"
           variants={sectionFade}
           initial="hidden"
           whileInView="visible"
@@ -682,7 +682,7 @@ export default function App() {
           <Container>
             <div className="rounded-[2.25rem] border border-(--accent-gradient)/30 bg-(--accent-gradient)/5 backdrop-blur-3xl p-2 shadow-(--shadow-glow) sm:p-3 relative overflow-hidden group">
               <div className="pointer-events-none absolute inset-0 bg-(--accent-gradient) opacity-10 group-hover:opacity-20 transition-opacity duration-1000 blur-3xl"></div>
-              
+
               <div className="rounded-4xl bg-(--glass-bg) backdrop-blur-xl p-8 sm:p-10 lg:p-12 text-(--text-primary) shadow-2xl border border-(--glass-border) relative z-10">
                 <div className="grid gap-12 lg:grid-cols-2 lg:items-center xl:gap-16">
                   <div className="flex flex-col items-start justify-center">
@@ -696,7 +696,7 @@ export default function App() {
                     <p className="mt-6 text-base sm:text-lg leading-relaxed text-(--text-secondary) max-w-lg">
                       I'm open to collaboration, learning opportunities, and roles where I can keep improving through practical work.
                     </p>
-                    
+
                     <div className="mt-8 sm:mt-12">
                       <PrimaryButton href={profile.resume} className="px-8 py-4 shadow-(--shadow-glow) hover:shadow-none hover:-translate-y-1 transition-all duration-300">
                         Download My Resume

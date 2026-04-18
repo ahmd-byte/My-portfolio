@@ -93,10 +93,10 @@ const projects = [
   {
     title: "PostgreSQL ETL Workflow",
     tag: "Data Engineering",
-    desc: "Transformed raw operational data into analysis-ready tables using a repeatable ETL process built for reporting use.",
+    desc: "Built a repeatable ETL workflow to extract raw operational data, transform it into clean structured tables, and load it into PostgreSQL for reporting and analysis.",
     stack: ["Python", "PostgreSQL", "SQLAlchemy", "ETL"],
     caseStudy: "#",
-    github: "#",
+    github: "https://github.com/ahmd-byte/postgresql-etl-workflow",
   },
 ];
 
